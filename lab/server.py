@@ -126,12 +126,23 @@ def count():
     except NameError:
         return {"message": "data not defined"}, 500
 
-@app.route("/person/<uuid>")
-def find_by_uuid(uuid):
+@app.route("/person/<uuid:id>")
+def find_by_uuid(id):
     try:
         for person in data:
-            if person["id"] == uuid:
+            if person["id"] == str(id):
                 return (person, 200)
         return ({"message": "person not found"}, 404)
+    except NameError:
+        return ({"message": "something went wrong"}, 500)
+
+@app.route("/person/<uuid:id>", methods=['DELETE'])
+def delete_by_uuid(id):
+    try:
+        for person in data:
+            if person["id"] == str(id):
+                data.remove(person)
+                return ({"message":f"{id} has been deleted."}, 200)
+        return ({"message": "person not found"}, 404)       
     except NameError:
         return ({"message": "something went wrong"}, 500)
