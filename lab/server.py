@@ -146,3 +146,21 @@ def delete_by_uuid(id):
         return ({"message": "person not found"}, 404)       
     except NameError:
         return ({"message": "something went wrong"}, 500)
+
+@app.route("/person", methods=['POST'])
+def add_by_uuid():
+    body = request.json
+    print(f"Body {body}")
+    if not body:
+        return {"message": "Invalid input parameter"}, 422 
+
+    try:
+        data.append(body)
+    except NameError:
+        return ({"message": "something went wrong"}, 500)
+
+    return ({"message": f"{body['id']} has been added"}, 200)
+
+@app.errorhandler(404)
+def api_not_found(error):
+    return {"message": "{API not found}"}, 404
