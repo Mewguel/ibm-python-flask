@@ -118,3 +118,20 @@ def name_search():
         if query.lower() in person["first_name"].lower():
             return person
     return ({"message": "Person not found"}, 404)
+
+@app.route("/count")
+def count():
+    try:
+        return {"data count": len(data)}, 200
+    except NameError:
+        return {"message": "data not defined"}, 500
+
+@app.route("/person/<uuid>")
+def find_by_uuid(uuid):
+    try:
+        for person in data:
+            if person["id"] == uuid:
+                return (person, 200)
+        return ({"message": "person not found"}, 404)
+    except NameError:
+        return ({"message": "something went wrong"}, 500)
